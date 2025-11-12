@@ -2,12 +2,13 @@
 from elementos import Pergunta, Quiz
 
 pergunta1 = Pergunta(
-    "Qual o nome da faculdade?",
-    ["A) CESMAC", "B) UNIMA", "C) UFAL", "D) UNINASSAU"],
-    "D",
-    "UNINASSAU",
-    "4"
+    "O que significa POO?",
+    ["A) Proogramação", "B) Programação Orientada a Objeto", "C) Programação Offline e Online", "D) Programação Online e Offline"],
+    "B",
+    "PROGRAMAÇÃO ORIENTADA A OBJETO",
+    "2"
 )
+
 pergunta2 = Pergunta(
     "Qual a cor do céu em um dia claro?",
     ["A) Azul", "B) Verde", "C) Vermelho", "D) Amarelo"],
@@ -51,9 +52,9 @@ for pergunta in quiz.perguntas: #Loop para cada pergunta
 print(f"Sua pontuação final é: {quiz.pontuacao} de {len(quiz.perguntas)}") #mostra quanto o usuário acertou e o total de perguntas
 
 #mensagens para alegrar (ou não) o usuário
-if quiz.pontuacao < 5: #se o usuário fez menos que 5 (foi ruim)
+if quiz.pontuacao < len(quiz.perguntas) / 2: #se o usuário fez menos que a metade (foi ruim)
     print("Desculpa, mas... você foi péssimo :(")
-elif 5 <= quiz.pontuacao < 8: #se o usuário fez entre 5 e 7 (foi mediano)
+elif len(quiz.perguntas) / 2 <= quiz.pontuacao < len(quiz.perguntas) / 1.5: #se o usuário fez entre a metade e /1.5 (foi mediano)
     print("Você foi... meh :|")
-else: #se o usuário fez 8 ou mais (foi bom)
+else: #se o usuário mais (foi bom)
     print("Boa!! :D")
