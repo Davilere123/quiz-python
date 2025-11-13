@@ -16,7 +16,11 @@ class Pergunta: #Cria a classe Pergunta, que vai representar cada pergunta do qu
 class Quiz: #Classe gerenciadora do quiz
     def __init__(self):
         self.perguntas = [] #Lista de perguntas
-        self.pontuacao = 0 #Pontuação do jogador
 
     def adicionar_pergunta(self, pergunta): #Adiciona uma pergunta ao quiz
         self.perguntas.append(pergunta)
+
+class Jogador: #Classe do jogador
+    def __init__(self, nome, pontos):
+        self.nome = nome
+        self.pontos = pontos
