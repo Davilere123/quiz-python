@@ -1,11 +1,11 @@
 #Importações e outros preparos
-from classes import Pergunta, Quiz, Jogador #Importa as classes
+from classes import Pergunta, PerguntaMultiplaEscolha, PerguntaVerdadeiroFalso, Quiz, Jogador #Importa as classes
 from SistemaLogs import SistemaLogs
 from Pontuavel import Pontuavel
 import time #Importa biblioteca "time" para dar um "tempo" em algumas partes do jogo
 
 #As perguntas do jogo
-pergunta1 = Pergunta(
+pergunta1 = PerguntaMultiplaEscolha(
     "multiple",
     "O que significa POO?",
     ["A) Proogramação", "B) Programação Orientada a Objeto", "C) Programação Offline e Online", "D) Programação Online e Offline"],
@@ -14,7 +14,7 @@ pergunta1 = Pergunta(
     "2"
 )
 
-pergunta2 = Pergunta(
+pergunta2 = PerguntaMultiplaEscolha(
     "multiple",
     "Qual a cor do céu em um dia claro?",
     ["A) Azul", "B) Verde", "C) Vermelho", "D) Amarelo"],
@@ -23,7 +23,7 @@ pergunta2 = Pergunta(
     "1"
 )
 
-pergunta3 = Pergunta(
+pergunta3 = PerguntaVerdadeiroFalso(
     "vf",
     "O Python é uma linguagem de programação de alto nível",
     ["V) Verdadeiro", "F) Falso"],
@@ -32,7 +32,7 @@ pergunta3 = Pergunta(
     "1"
 )
 
-pergunta4 = Pergunta(
+pergunta4 = PerguntaVerdadeiroFalso(
     "vf",
     "HTML é uma linguagem de programação",
     ["V) Verdadeiro", "F) Falso"],

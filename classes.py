@@ -61,7 +61,7 @@ class Pergunta: #Cria a classe abstrata Pergunta, que vai representar cada pergu
 
 #--------------------------------
 class PerguntaMultiplaEscolha(Pergunta):
-    def __init__(self, enunciado, resposta_correta, alternativa_correta, numero_correto, alternativas, pontosBase)
+    def __init__(self, enunciado, resposta_correta, alternativa_correta, numero_correto, alternativas, pontosBase):
         super().__init__(resposta_correta, alternativa_correta, numero_correto, pontosBase)
         self.alternativas = alternativas
     
@@ -78,7 +78,7 @@ class PerguntaMultiplaEscolha(Pergunta):
 
 #--------------------------------
 class PerguntaVerdadeiroFalso(Pergunta):
-    def __init__(self, enunciado, resposta_correta, alternativa_correta, numero_correto, pontosBase)
+    def __init__(self, enunciado, resposta_correta, alternativa_correta, numero_correto, pontosBase):
         resposta_correta = "V" if resposta_correta else "F"
         alternativa_correta = "VERDADEIRO" if alternativa_correta else "FALSO"
         numero_correto = "1" if numero_correto else "0"
@@ -87,7 +87,17 @@ class PerguntaVerdadeiroFalso(Pergunta):
 
         def verificar_resposta(self, resposta):
 
-        resposta = resposta.strip().upper()
+            resposta = resposta.strip().upper()
+
+            if resposta in ["V", "VERDADEIRO", "1"]:
+                return self._resposta_correta
+            if resposta in ["F", "FALSO", "2"]:
+                return not self._resposta_correta
+        
+            return False
+
+    def calcPontuacao(self):
+        return max(1, self.pontosBase // 2)
 
 
 
