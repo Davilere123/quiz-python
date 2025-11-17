@@ -3,4 +3,5 @@ from abc import ABC, abstractmethod #Importa, da biblioteca ABC, as funções pa
 class Pontuavel(ABC): #Cria a interface Pontuavel
     @abstractmethod
     def calcPontuacao(self):
+        #Retorna a pontuação obtida para a pergunta.
         pass

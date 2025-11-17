@@ -41,89 +41,148 @@ pergunta4 = PerguntaVerdadeiroFalso(
     "2"
 )
 
-quiz = Quiz(0) #Atribui a classe quiz e suas funções a variável quiz
-
-#Adiciona perguntas
-quiz.adicionar_pergunta(pergunta1)
-quiz.adicionar_pergunta(pergunta2)
-quiz.adicionar_pergunta(pergunta3)
-quiz.adicionar_pergunta(pergunta4)
-
 # O quiz
 
-print("Quiz - Kahoot 2")
-print("Bem-vindo ao \"\"Kahoot 2\"\"!")
-print("=" * 10)
-print("")
+# Ranking em memória (nome -> melhor pontuação)
+ranking = {}
 
-jogador = Jogador(input("Quem vai jogar? (Digite o nome do jogador) -> "), 0) #Atribui a classe Jogador e suas funções a variavel jogador (e define a pontuacao inicial de 0)
 
-print("=" * 10)
-print("")
+def iniciarJogo(jogador, quiz_obj):
+    """Executa o loop de perguntas para um jogador usando o quiz já criado.
 
-print(f"Beleza, {jogador.nome}! Vamos começar!") #Alerta o jogador que o jogo vai começar
-
-time.sleep(2)
-print("")
-
-for pergunta in quiz.perguntas: #Loop para cada pergunta
-
-    if pergunta.tipo == "multiple":
-        print("Pergunta de Múltipla Escolha!")
-        print("")
-
-        print(pergunta.enunciado) #Imprime a pergunta
-
-        for alternativa in pergunta.alternativas: #Percorre as alternativas
-            print(alternativa) #Imprime cada alternativa
-
-        print("")
-
-    elif pergunta.tipo == "vf":
-        print("Pergunta de Verdadeiro ou Falso")
-        print("")
-
-        print(pergunta.enunciado) #Imprime a pergunta
-
-        for alternativa in pergunta.alternativas:
-            print(alternativa)
-
-        print("")
-
-    resposta = input("Digite a alternativa correta: ").strip().upper() #Recebe a resposta do usuário
-    print("")
-
-    if pergunta.verificar_resposta(resposta): #Verifica se a resposta (digitada por extenso) está correta
-        print("Resposta correta!")
-        jogador.pontos += 1
-
-    elif pergunta.verificar_alternativa(resposta): #Verifica se a alternativa (letra) está correta
-        print("Resposta correta!")
-        jogador.pontos += 1
-
-    elif pergunta.verificar_numero(resposta): #Verifica se a alternativa (número) está correta
-        print("Resposta correta!")
-        jogador.pontos += 1 #adiciona +1 na pontuação (o mesmo vale para as outras)
-
-    else: #Se errar
-        print(f"Resposta incorreta. A resposta correta é: {pergunta.resposta_correta}")
-        
-    print("")
-    print(f"Sua pontuação atual é de {jogador.pontos} pontos!")
-    print("-" * 10)
-    print("")
+    Mantém nomes de variáveis e mensagens finais exatamente como no seu código.
+    """
+    print(f"Beleza, {jogador.nome}! Vamos começar!") #Alerta o jogador que o jogo vai começar
     time.sleep(2)
+    print("")
 
-#Depois do quiz
+    for pergunta in quiz_obj.perguntas: #Loop para cada pergunta
 
-print(f"Sua pontuação final é: {jogador.pontos} de {len(quiz.perguntas)}") #mostra quanto o usuário acertou e o total de perguntas
+        if pergunta.tipo == "multiple":
+            print("Pergunta de Múltipla Escolha!")
+            print("")
+            time.sleep(0.5)
+            print(pergunta.enunciado) #Imprime a pergunta
 
-#mensagens para alegrar (ou não) o usuário
-if jogador.pontos < len(quiz.perguntas) / 2: #se o usuário fez menos que a metade (foi ruim)
-    print(f"Desculpa {jogador.nome}, mas... você foi péssimo :(")
+            for alternativa in pergunta.alternativas: #Percorre as alternativas
+                print(alternativa) #Imprime cada alternativa
 
-elif len(quiz.perguntas) / 2 <= jogador.pontos < len(quiz.perguntas) / 1.5: #se o usuário fez entre a metade e /1.5 (foi mediano)
-    print("Você foi... meh :|")
+            print("")
 
-else: #se o usuário mais (foi bom)
-    print(f"Boa {jogador.nome}!! :D")
+        elif pergunta.tipo == "vf":
+            print("Pergunta de Verdadeiro ou Falso")
+            print("")
+            time.sleep(0.5)
+            print(pergunta.enunciado) #Imprime a pergunta
+
+            for alternativa in pergunta.alternativas:
+                print(alternativa)
+
+            print("")
+
+        resposta = input("Digite a alternativa correta: ").strip().upper() #Recebe a resposta do usuário
+        print("")
+
+        #calcular pontos da pergunta via método da pergunta
+        try:
+            pontos_pergunta = pergunta.calcPontuacao()
+        except Exception:
+            #fallback para 1 ponto caso não exista
+            pontos_pergunta = 1
+
+        if pergunta.verificar_resposta(resposta): #Verifica se a resposta (digitada por extenso) está correta
+            print("Resposta correta!")
+            jogador.adicionar_pontos(pontos_pergunta)
+            SistemaLogs.registrarEvento(f"Pergunta respondida - correta | Jogador: {jogador.nome}", nivel=200)
+
+        elif pergunta.verificar_alternativa(resposta): #Verifica se a alternativa (letra) está correta
+            print("Resposta correta!")
+            jogador.adicionar_pontos(pontos_pergunta)
+            SistemaLogs.registrarEvento(f"Pergunta respondida - correta (alternativa) | Jogador: {jogador.nome}", nivel=200)
+
+        elif pergunta.verificar_numero(resposta): #Verifica se a alternativa (número) está correta
+            print("Resposta correta!")
+            jogador.adicionar_pontos(pontos_pergunta) #adiciona pontos da pergunta
+            SistemaLogs.registrarEvento(f"Pergunta respondida - correta (número) | Jogador: {jogador.nome}", nivel=200)
+
+        else: #Se errar
+            print(f"Resposta incorreta. A resposta correta é: {pergunta.resposta_correta}")
+            SistemaLogs.registrarEvento(f"Pergunta respondida - incorreta | Jogador: {jogador.nome}", nivel=400)
+            
+        print("")
+        print(f"Sua pontuação atual é de {jogador.pontos} pontos!")
+        print("-" * 10)
+        print("")
+        time.sleep(2)
+
+    #Depois do quiz
+
+    print(f"Sua pontuação final é: {jogador.pontos} de {len(quiz_obj.perguntas)}") #mostra quanto o usuário acertou e o total de perguntas
+
+    #atualiza ranking (mantém o melhor score por nome)
+    prev = ranking.get(jogador.nome)
+    if prev is None or jogador.pontos > prev:
+        ranking[jogador.nome] = jogador.pontos
+
+    #Exibe total de quizzes (contador estático)
+    print(f"Total de quizzes criados: {Quiz.getTotalQuizzesJogos()}")
+    SistemaLogs.registrarEvento(f"Quiz finalizado | Jogador: {jogador.nome} | Pontos: {jogador.pontos}", nivel=300)
+
+    #mensagens para alegrar (ou não) o usuário
+    if jogador.pontos < len(quiz_obj.perguntas) / 2: #se o usuário fez menos que a metade (foi ruim)
+        print(f"Desculpa {jogador.nome}, mas... você foi péssimo :(")
+
+    elif len(quiz_obj.perguntas) / 2 <= jogador.pontos < len(quiz_obj.perguntas) / 1.5: #se o usuário fez entre a metade e /1.5 (foi mediano)
+        print("Você foi... meh :|")
+
+    else: #se o usuário mais (foi bom)
+        print(f"Boa {jogador.nome}!! :D")
+
+
+def mostrarRanking():
+    if not ranking:
+        print("Nenhum jogador registrado ainda.")
+        return
+    print("\n===== RANKING =====")
+    sorted_rank = sorted(ranking.items(), key=lambda x: x[1], reverse=True)
+    for i, (nome, pts) in enumerate(sorted_rank, start=1):
+        print(f"{i}) {nome} - {pts} pontos")
+    print("===================\n")
+
+
+def menuPrincipal():
+    while True:
+        print("\n=========== MENU DO QUIZ ===========")
+        print("1) Iniciar jogo")
+        print("2) Ver ranking de jogadores")
+        print("3) Ver o número total de quizzes jogados")
+        print("4) Sair")
+        print("====================================")
+        opcao = input("Escolha uma opção: ").strip()
+
+        if opcao == "1":
+            nome = input("Quem vai jogar? (digite o nome do jogador atual) ->  ").strip()
+            jogador = Jogador(nome, 0)
+            # cria um novo Quiz agora — isso incrementa corretamente o contador estático
+            quiz = Quiz()
+            quiz.adicionar_pergunta(pergunta1)
+            quiz.adicionar_pergunta(pergunta2)
+            quiz.adicionar_pergunta(pergunta3)
+            quiz.adicionar_pergunta(pergunta4)
+            iniciarJogo(jogador, quiz)
+        elif opcao == "2":
+            mostrarRanking()
+        elif opcao == "3":
+            print(f"Total de quizzes jogados: {Quiz.getTotalQuizzesJogos()}")
+        elif opcao == "4":
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida.")
+
+
+if __name__ == "__main__":
+    print("Quiz - Kahoot 2")
+    print("Bem-vindo ao \"\"Kahoot 2\"\"!")
+    print("=" * 10)
+    menuPrincipal()
