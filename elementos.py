@@ -1,7 +1,8 @@
 class Pergunta: #Cria a classe Pergunta, que vai representar cada pergunta do quiz
-    def __init__(self, enunciado, opcoes, resposta_correta, alternativa_correta, numero_correto): #Inicia a classe
+    def __init__(self, tipo, enunciado, alternativas, resposta_correta, alternativa_correta, numero_correto): #Inicia a classe
+        self.tipo = tipo
         self.enunciado = enunciado
-        self.opcoes = opcoes
+        self.alternativas = alternativas
         self.resposta_correta = resposta_correta
         self.alternativa_correta = alternativa_correta
         self.numero_correto = numero_correto
@@ -14,11 +15,12 @@ class Pergunta: #Cria a classe Pergunta, que vai representar cada pergunta do qu
         return numero == self.numero_correto
     
 class Quiz: #Classe gerenciadora do quiz
-    def __init__(self):
+    def __init__(self, totalJogados):
         self.perguntas = [] #Lista de perguntas
 
     def adicionar_pergunta(self, pergunta): #Adiciona uma pergunta ao quiz
         self.perguntas.append(pergunta)
+
 
 class Jogador: #Classe do jogador
     def __init__(self, nome, pontos):

@@ -4,6 +4,7 @@ import time #Importa biblioteca "time" para dar um "tempo" em algumas partes do 
 
 #As perguntas do jogo
 pergunta1 = Pergunta(
+    "multiple",
     "O que significa POO?",
     ["A) Proogramação", "B) Programação Orientada a Objeto", "C) Programação Offline e Online", "D) Programação Online e Offline"],
     "B",
@@ -12,6 +13,7 @@ pergunta1 = Pergunta(
 )
 
 pergunta2 = Pergunta(
+    "multiple",
     "Qual a cor do céu em um dia claro?",
     ["A) Azul", "B) Verde", "C) Vermelho", "D) Amarelo"],
     "A",
@@ -19,7 +21,8 @@ pergunta2 = Pergunta(
     "1"
 )
 
-pergunta3 = Pergunta (
+pergunta3 = Pergunta(
+    "vf",
     "O Python é uma linguagem de programação de alto nível",
     ["V) Verdadeiro", "F) Falso"],
     "V",
@@ -27,7 +30,8 @@ pergunta3 = Pergunta (
     "1"
 )
 
-pergunta4 = Pergunta (
+pergunta4 = Pergunta(
+    "vf",
     "HTML é uma linguagem de programação",
     ["V) Verdadeiro", "F) Falso"],
     "F",
@@ -61,11 +65,28 @@ time.sleep(2)
 print("")
 
 for pergunta in quiz.perguntas: #Loop para cada pergunta
-    print(pergunta.enunciado) #Imprime a pergunta
 
-    for opcao in pergunta.opcoes: #Percorre as alternativas
-        print(opcao) #Imprime cada alternativa
-    print("")
+    if pergunta.tipo == "multiple":
+        print("Pergunta de Múltipla Escolha!")
+        print("")
+
+        print(pergunta.enunciado) #Imprime a pergunta
+
+        for alternativa in pergunta.alternativas: #Percorre as alternativas
+            print(alternativa) #Imprime cada alternativa
+
+        print("")
+
+    elif pergunta.tipo == "vf":
+        print("Pergunta de Verdadeiro ou Falso")
+        print("")
+
+        print(pergunta.enunciado) #Imprime a pergunta
+
+        for alternativa in pergunta.alternativas:
+            print(alternativa)
+            
+        print("")
 
     resposta = input("Digite a alternativa correta: ").strip().upper() #Recebe a resposta do usuário
     print("")
