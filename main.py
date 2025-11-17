@@ -41,7 +41,7 @@ pergunta4 = Pergunta(
     "2"
 )
 
-quiz = Quiz() #Atribui a classe quiz e suas funções a variável quiz
+quiz = Quiz(0) #Atribui a classe quiz e suas funções a variável quiz
 
 #Adiciona perguntas
 quiz.adicionar_pergunta(pergunta1)
