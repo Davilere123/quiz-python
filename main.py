@@ -1,5 +1,7 @@
 #Importações e outros preparos
-from elementos import Pergunta, Quiz, Jogador #Importa as classes
+from classes import Pergunta, Quiz, Jogador #Importa as classes
+from SistemaLogs import SistemaLogs
+from Pontuavel import Pontuavel
 import time #Importa biblioteca "time" para dar um "tempo" em algumas partes do jogo
 
 #As perguntas do jogo
@@ -54,7 +56,7 @@ print("Bem-vindo ao \"\"Kahoot 2\"\"!")
 print("=" * 10)
 print("")
 
-jogador = Jogador(input("Qual o seu nome? -> "), 0) #Atribui a classe Jogador e suas funções a variavel jogador
+jogador = Jogador(input("Quem vai jogar? (Digite o nome do jogador) -> "), 0) #Atribui a classe Jogador e suas funções a variavel jogador (e define a pontuacao inicial de 0)
 
 print("=" * 10)
 print("")
@@ -85,7 +87,7 @@ for pergunta in quiz.perguntas: #Loop para cada pergunta
 
         for alternativa in pergunta.alternativas:
             print(alternativa)
-            
+
         print("")
 
     resposta = input("Digite a alternativa correta: ").strip().upper() #Recebe a resposta do usuário

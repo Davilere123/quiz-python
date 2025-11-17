@@ -1,11 +1,14 @@
+from abc import ABC, abstractmethod
+
 class Pergunta: #Cria a classe Pergunta, que vai representar cada pergunta do quiz
-    def __init__(self, tipo, enunciado, alternativas, resposta_correta, alternativa_correta, numero_correto): #Inicia a classe
+    def __init__(self, tipo, enunciado, resposta_correta, alternativa_correta, numero_correto): #Inicia a classe
         self.tipo = tipo
         self.enunciado = enunciado
-        self.alternativas = alternativas
         self.resposta_correta = resposta_correta
         self.alternativa_correta = alternativa_correta
         self.numero_correto = numero_correto
+
+        
 
     def verificar_resposta(self, resposta): #Verifica se a resposta está correta
         return resposta == self.resposta_correta
