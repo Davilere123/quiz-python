@@ -4,6 +4,8 @@ from SistemaLogs import SistemaLogs
 from Pontuavel import Pontuavel
 import time #Importa biblioteca "time" para dar um "tempo" em algumas partes do jogo
 
+#-------------------------------
+
 #As perguntas do jogo
 pergunta1 = PerguntaMultiplaEscolha(
     "multiple",
@@ -41,17 +43,15 @@ pergunta4 = PerguntaVerdadeiroFalso(
     "2"
 )
 
-# O quiz
+#--------------------------
 
-# Ranking em memória (nome -> melhor pontuação)
+#Cria o ranking (nome -> melhor pontuação)
 ranking = {}
 
+#--------------------------
 
+#Funções do menu
 def iniciarJogo(jogador, quiz_obj):
-    """Executa o loop de perguntas para um jogador usando o quiz já criado.
-
-    Mantém nomes de variáveis e mensagens finais exatamente como no seu código.
-    """
     print(f"Beleza, {jogador.nome}! Vamos começar!") #Alerta o jogador que o jogo vai começar
     time.sleep(2)
     print("")
@@ -83,7 +83,7 @@ def iniciarJogo(jogador, quiz_obj):
         resposta = input("Digite a alternativa correta: ").strip().upper() #Recebe a resposta do usuário
         print("")
 
-        #calcular pontos da pergunta via método da pergunta
+        #calcula os pontos da pergunta via método da pergunta
         try:
             pontos_pergunta = pergunta.calcPontuacao()
         except Exception:
@@ -132,54 +132,73 @@ def iniciarJogo(jogador, quiz_obj):
     if jogador.pontos < len(quiz_obj.perguntas) / 2: #se o usuário fez menos que a metade (foi ruim)
         print(f"Desculpa {jogador.nome}, mas... você foi péssimo :(")
 
-    elif len(quiz_obj.perguntas) / 2 <= jogador.pontos < len(quiz_obj.perguntas) / 1.5: #se o usuário fez entre a metade e /1.5 (foi mediano)
+    elif len(quiz_obj.perguntas) / 2 <= jogador.pontos < len(quiz_obj.perguntas): #se o usuário fez entre a metade e o total (foi mediano)
         print("Você foi... meh :|")
 
-    else: #se o usuário mais (foi bom)
+    else: #se o usuário fez uma pontuação boa
         print(f"Boa {jogador.nome}!! :D")
 
 
 def mostrarRanking():
-    if not ranking:
+    if not ranking: #se o ranking for nulo
         print("Nenhum jogador registrado ainda.")
+        print("")
         return
+    
     print("\n===== RANKING =====")
-    sorted_rank = sorted(ranking.items(), key=lambda x: x[1], reverse=True)
-    for i, (nome, pts) in enumerate(sorted_rank, start=1):
+    sorted_rank = sorted(ranking.items(), key=lambda x: x[1], reverse=True) #Classifica o ranking
+    for i, (nome, pts) in enumerate(sorted_rank, start=1): #loop para exibir os nomes e pontuações
         print(f"{i}) {nome} - {pts} pontos")
     print("===================\n")
 
 
 def menuPrincipal():
-    while True:
+    while True: #loop para o programa só encerrar quando o usuário escolher
         print("\n=========== MENU DO QUIZ ===========")
         print("1) Iniciar jogo")
         print("2) Ver ranking de jogadores")
         print("3) Ver o número total de quizzes jogados")
         print("4) Sair")
         print("====================================")
-        opcao = input("Escolha uma opção: ").strip()
+        opcao = input("Escolha uma opção: ").strip()  #Recebe a opção que o usuário escolheu
+        print("")
 
-        if opcao == "1":
-            nome = input("Quem vai jogar? (digite o nome do jogador atual) ->  ").strip()
-            jogador = Jogador(nome, 0)
-            # cria um novo Quiz agora — isso incrementa corretamente o contador estático
+        if opcao == "1": #O usuário escolhe jogar
+            nome = input("Quem vai jogar? (digite o nome do jogador atual) ->  ").strip() #Recebe o nome
+            jogador = Jogador(nome, 0) #Cria o jogador com o nome dado e pontuação 0
+
+            #cria um novo Quiz
             quiz = Quiz()
+
+            #Adiciona as perguntas
             quiz.adicionar_pergunta(pergunta1)
             quiz.adicionar_pergunta(pergunta2)
             quiz.adicionar_pergunta(pergunta3)
             quiz.adicionar_pergunta(pergunta4)
-            iniciarJogo(jogador, quiz)
-        elif opcao == "2":
-            mostrarRanking()
-        elif opcao == "3":
-            print(f"Total de quizzes jogados: {Quiz.getTotalQuizzesJogos()}")
-        elif opcao == "4":
-            print("Saindo...")
-            break
-        else:
-            print("Opção inválida.")
 
+            #Começa o jogo
+            iniciarJogo(jogador, quiz)
+
+        elif opcao == "2": #O usuário escolhe mostrar o ranking
+            mostrarRanking()
+            time.sleep(2)
+
+        elif opcao == "3": #O usuário escolhe ver o total de quizzes já jogados
+            print(f"Total de quizzes jogados: {Quiz.getTotalQuizzesJogos()}")
+            time.sleep(2)
+
+        elif opcao == "4": #O usuário escolhe sair
+            print("Saindo...")
+            time.sleep(1)
+            break
+
+        else: #O usuário escolheu algo que não existe
+            print("Opção inválida")
+            time.sleep(2)
+
+#-----------------------
+
+#Inicia o menu do quiz
 
 if __name__ == "__main__":
     print("Quiz - Kahoot 2")
